@@ -7,6 +7,15 @@ import json
 
 class NotesManager:  
     def __init__(self, name="nodes"):
+        """  
+        Создает класс для блокнота 
+    
+        Args:  
+            name - имя для создания файла json  
+    
+        Returns:  
+            Объект Блокнот  
+        """  
         self.name = f'{name}.json'  
         self.notes = []
         if(os.path.exists(self.name)):
@@ -26,12 +35,23 @@ class NotesManager:
         except FileNotFoundError as e:
             return False 
   
-    def create_note(self, title, content): 
+    def create_note(self, title, content):
+        """  
+        Создает запись в блокноте 
+    
+        Args:
+            title - заголовок записи,
+            content - текст записи ,   
+        """  
         self.note_id += 1  
         note = Note(self.note_id , title, content)  
         self.notes.append(note)  
   
-    def save_notes(self):  
+    def save_notes(self): 
+        """  
+        Сохраняет запись в блокноте 
+   
+        """   
         notes_data = []  
         for note in self.notes:  
             note_data = {  
@@ -46,7 +66,11 @@ class NotesManager:
         with open(self.name, 'w') as file:  
             json.dump(notes_data, file, indent=4)  
   
-    def load_notes(self):  
+    def load_notes(self):
+        """  
+        Читает записи в блокноте 
+   
+        """  
         try:  
             with open(self.name, 'r') as file:  
                 notes_data = json.load(file)  
@@ -63,6 +87,13 @@ class NotesManager:
         except FileNotFoundError as e:  
             self.notes = [] 
     def list_notes_id(self,id):
+        """  
+        Выводит записи из блокнота по id
+
+        Arg:
+            id - id записи 
+   
+        """
         swithc = True
         if(id != ""):
             for note in self.notes:
@@ -74,6 +105,10 @@ class NotesManager:
         else:
             print("Вы не указали айди")   
     def list_notes(self):
+        """  
+        Выводит записи из блокнота 
+
+        """
         shitch = True
         for note in self.notes:  
             print(f"ID: {note.id}, Заголовок: {note.title}, Дата/время создания: {note.created_at}, Дата/время последнего изменения: {note.updated_at}")
@@ -81,6 +116,13 @@ class NotesManager:
         if(shitch):
             print('\n!!!!!!!!!!!Список пуст!!!!!!!!!!!!\n')
     def list_notes_data(self, date):
+        """  
+        Выводит записи из блокнота по указонному дню
+
+        Arg:
+            date - date записи 
+   
+        """
         shitch = True 
         for note in self.notes:
             if (str(note.created_at).split(' ')[0] == date):  
@@ -88,14 +130,30 @@ class NotesManager:
                 shitch= False
         if(shitch):
             print('\n!!!!!!!!!!!Список пуст!!!!!!!!!!!!\n')
-    def edit_note(self, note_id, new_title, new_content):  
+    def edit_note(self, note_id, new_title, new_content):
+        """  
+        Обнавляет записи из блокнота по id
+
+        Arg:
+            note_id - id записи, 
+            new_title - заголовок записи, 
+            new_content - текст записи, 
+   
+        """  
         for note in self.notes:  
             if note.id == note_id:  
                 note.update(new_title, new_content)  
                 return True  
         return False  
   
-    def delete_note(self, note_id):  
+    def delete_note(self, note_id): 
+        """  
+        Удалят записи из блокнота по id
+
+        Arg:
+            id - id записи 
+   
+        """ 
         for note in self.notes:  
             if note.id == note_id:  
                 self.notes.remove(note)  
